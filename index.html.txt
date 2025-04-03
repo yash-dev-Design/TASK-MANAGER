@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Your Daily Tasks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Your Daily Tasks</h1>
+        <hr>
+        <div class="bar">
+            <input type="text" placeholder="Enter your task here..." id="taskInput">
+            <button type="button" id="addTaskBtn" class="pulse">
+                <i class="fas fa-plus"></i> ADD
+            </button>
+        </div>
+        <ul id="taskList" class="task-list"></ul>
+        <div id="emptyState" class="empty-state">
+            <i class="fas fa-tasks"></i>
+            <span>No tasks yet. Add your first task above!</span>
+        </div>
+        <div id="taskCount" class="task-count"></div>
+    </div>
+</body>
+</html>

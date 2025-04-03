@@ -1,0 +1,113 @@
+<script>
+        // Get references to the HTML elements
+        const taskInput = document.getElementById("taskInput");
+        const addTaskBtn = document.getElementById("addTaskBtn");
+        const taskList = document.getElementById("taskList");
+        const emptyState = document.getElementById("emptyState");
+        const taskCount = document.getElementById("taskCount");
+
+        // Function to update task count
+        function updateTaskCount() {
+            const count = taskList.children.length;
+            taskCount.textContent = `${count} ${count === 1 ? 'task' : 'tasks'}`;
+            emptyState.style.display = count === 0 ? 'flex' : 'none';
+        }
+
+        // Function to add a task
+        function addTask() {
+            const taskText = taskInput.value.trim();
+            if (taskText) {
+                // Create a new list item (task)
+                const taskItem = document.createElement("li");
+                taskItem.classList.add("task-item", "adding");
+                
+                // Create checkbox
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.classList.add("checkbox");
+                checkbox.onchange = function() {
+                    taskItem.classList.toggle("completed", checkbox.checked);
+                };
+
+                // Create the text element
+                const taskTextElement = document.createElement("span");
+                taskTextElement.textContent = taskText;
+                taskTextElement.classList.add("task-text");
+
+                // Create the buttons container
+                const buttonsContainer = document.createElement("div");
+                buttonsContainer.classList.add("task-buttons");
+
+                // Create the edit button
+                const editButton = document.createElement("button");
+                editButton.innerHTML = '<i class="fas fa-edit"></i> Edit';
+                editButton.classList.add("edit-btn");
+                editButton.onclick = function() {
+                    if (taskTextElement.isContentEditable) {
+                        // Save the task text
+                        taskTextElement.contentEditable = false;
+                        editButton.innerHTML = '<i class="fas fa-edit"></i> Edit';
+                        taskTextElement.blur();
+                    } else {
+                        // Allow editing
+                        taskTextElement.contentEditable = true;
+                        taskTextElement.focus();
+                        editButton.innerHTML = '<i class="fas fa-save"></i> Save';
+                    }
+                };
+
+                // Create the delete button
+                const deleteButton = document.createElement("button");
+                deleteButton.innerHTML = '<i class="fas fa-trash"></i> Delete';
+                deleteButton.classList.add("delete-btn");
+                deleteButton.onclick = function() {
+                    taskItem.classList.add("removing");
+                    setTimeout(() => {
+                        taskItem.remove();
+                        updateTaskCount();
+                    }, 500);
+                };
+
+                // Create task content container
+                const taskContent = document.createElement("div");
+                taskContent.classList.add("task-content");
+                taskContent.appendChild(checkbox);
+                taskContent.appendChild(taskTextElement);
+
+                // Append the buttons to the container
+                buttonsContainer.appendChild(editButton);
+                buttonsContainer.appendChild(deleteButton);
+
+                // Append elements to the task item
+                taskItem.appendChild(taskContent);
+                taskItem.appendChild(buttonsContainer);
+
+                // Add the task item to the task list
+                taskList.appendChild(taskItem);
+
+                // Clear the input field after adding
+                taskInput.value = "";
+                
+                // Update task count
+                updateTaskCount();
+                
+                // Remove adding class after animation completes
+                setTimeout(() => {
+                    taskItem.classList.remove("adding");
+                }, 500);
+            }
+        }
+
+        // Event listener for the Add button
+        addTaskBtn.addEventListener("click", addTask);
+
+        // Allow pressing Enter to add a task
+        taskInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                addTask();
+            }
+        });
+
+        // Initialize task count
+        updateTaskCount();
+    </script>
